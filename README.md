@@ -1,7 +1,7 @@
 # LumiBox - Intelligent Gmail Backup & Search
 
 <div align="center">
-  <img src="assets/lumilogo.png" alt="LumiBox Logo" width="200"/>
+  <img src="assets/lumilogo.png" alt="LumiBox Logo" width="400"/>
 </div>
 
 A Python application that reads Gmail .mbox files (from Gmail backup/export) and stores email data with metadata in a PostgreSQL database. **LumiBox is evolving into an AI-powered email intelligence platform** with natural language search, conversation analysis, and privacy-first local processing.
