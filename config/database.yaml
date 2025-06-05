@@ -1,0 +1,50 @@
+database:
+  connection_pool:
+    min_connections: 1
+    max_connections: 10
+    connection_timeout: 30
+  
+  tables:
+    emails:
+      name: "emails"
+      schema: |
+        CREATE SCHEMA IF NOT EXISTS {schema};
+        CREATE TABLE IF NOT EXISTS {schema}.emails (
+          id SERIAL PRIMARY KEY,
+          message_id VARCHAR(255) UNIQUE NOT NULL,
+          subject TEXT,
+          sender VARCHAR(255),
+          recipient TEXT,
+          date_sent TIMESTAMP,
+          date_received TIMESTAMP,
+          body_text TEXT,
+          body_html TEXT,
+          attachments_count INTEGER DEFAULT 0,
+          labels TEXT[],
+          thread_id VARCHAR(255),
+          raw_headers JSONB,
+          created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+          updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+        );
+    
+    attachments:
+      name: "attachments"
+      schema: |
+        CREATE TABLE IF NOT EXISTS {schema}.attachments (
+          id SERIAL PRIMARY KEY,
+          email_id INTEGER REFERENCES {schema}.emails(id) ON DELETE CASCADE,
+          filename VARCHAR(255),
+          content_type VARCHAR(100),
+          size_bytes INTEGER,
+          content BYTEA,
+          created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+        );
+
+processing:
+  batch_size: 100
+  max_retries: 3
+  retry_delay: 5
+  
+logging:
+  format: "%(asctime)s - %(name)s - %(levelname)s - %(message)s"
+  date_format: "%Y-%m-%d %H:%M:%S"
